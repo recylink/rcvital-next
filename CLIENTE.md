@@ -16,6 +16,13 @@ Archivo aparte del README a propósito: así traer cambios de la instancia de re
 | Robot (service account) | `rcando@recylink.iam.gserviceaccount.com`, el mismo que NEXT, Level, Ando y Obra Limpia |
 | Columna "Empresa" | `Vital` (`lib/instance.js`) |
 | Carpeta vieja / Apps Script | **No existen.** Vital no tuvo prototipo |
+| Repo | `recylink/rcvital-next` |
+| Proyecto de Vercel | `rcvital-next`, scope `recylink` |
+| Dirección pública | **https://rcvital-next.vercel.app** |
+
+**La carpeta local se llama `registro-de-consumos-vital-next` y el repo `rcvital-next`.**
+No es un error: el nombre corto entra entero en un subdominio de Vercel. Obra Limpia usó el
+nombre largo y su alias quedó recortado sin la `t` final.
 
 Contenido de la planilla al 2026-09-14: **vacía**. Las 9 hojas las creó `setup`, con sus
 encabezados. Sin sucursales, sin registros: el cliente las carga desde la app.
@@ -68,22 +75,27 @@ la unidad compartida, ya hereda el acceso. `/api/health` respondió `sdk.ok` a l
       `ZZ prueba migracion (borrar).txt` en la papelera de la unidad; se purgan solos a los
       30 días. El error que da es `File not found`, no un 403, que es lo que lo hace parecer
       otra cosa
-- [ ] **Repo en GitHub** `recylink/registro-de-consumos-vital-next`, privado y **vacío**
-      (sin README ni `.gitignore`, o el push choca). `gh` no está instalado acá, así que lo
-      crea Domingo por la web
-- [ ] **`git push -u origin main`** — lo corre Domingo: el clasificador bloquea el push
-- [ ] **Desplegar en Vercel**: `vercel link --yes` (NO `vercel project add`, que crea el
-      proyecto sin framework y sirve `public/` como sitio estático — todo 404 sin decirlo).
-      Variables de Production: las del `.env.local` + `SITE_PASSWORD` + `FRAME_ANCESTORS=*`
-      + `COOKIE_CROSS_SITE=1`. Pelar las comillas de `GOOGLE_PRIVATE_KEY` antes de pasarla,
-      o el deploy da `error:1E08010C:DECODER routines::unsupported`
-- [ ] **Verificar la URL real**, no suponerla: `registro-de-consumos-obralimpia-next` se
-      pasó del largo máximo de subdominio y su alias quedó recortado sin la `t` final
+- [x] **Desplegado en Vercel** (2026-09-14), proyecto `rcvital-next` en el scope `recylink`,
+      con las 9 variables de Production: las del `.env.local` (sin `APPS_SCRIPT_URL`, que no
+      aplica) + `SITE_PASSWORD` + `FRAME_ANCESTORS=*` + `COOKIE_CROSS_SITE=1`.
+      **La dirección pública es https://rcvital-next.vercel.app** y el alias entró entero,
+      sin recorte. La variante `…-recylink.vercel.app` existe pero está detrás del login de
+      Vercel (302 a `sso-api`), así que no sirve para el cliente.
+      Verificado: `/` responde **307 a `/acceso`** —o sea que `SITE_PASSWORD` llegó y el muro
+      está activo—, el CSP sale con `frame-ancestors *` y **sin** `X-Frame-Options`.
+      Las variables quedaron marcadas *Sensitive*: `vercel env pull` devuelve `[SENSITIVE]`,
+      así que si se pierde una la única salida es sobrescribirla
+- [ ] **`git push -u origin main`** — el repo `recylink/rcvital-next` ya está como `origin`,
+      pero el push lo corre Domingo: el clasificador de auto mode lo bloquea.
+      `vercel link` abre un menú interactivo y se cancela cuando hay dos remotos, así que se
+      linkeó con `origin` quitado un momento y después se volvió a poner
 - [ ] **Git conectado.** En Ando y Obra Limpia `vercel git connect` falló por permisos de la
       app de Vercel en GitHub. Hasta que se conecte, desplegar es `vercel --prod` a mano
-- [ ] **Escritura de punta a punta**: login en prod y un registro manual de prueba. Sacarlo
-      a mano de la planilla: la app no tiene action que borre un registro suelto (solo
-      `deleteSucursal`, que borra TODAS las filas de una sucursal)
+- [ ] **Escritura de punta a punta**: login en prod con la clave y un registro manual de
+      prueba. Queda para el navegador y no se pudo automatizar: el login es un Server Action
+      y sacar su `Next-Action` id del build no valía el rodeo, y además la fila de prueba se
+      saca **a mano** de la planilla — la app no tiene action que borre un registro suelto
+      (solo `deleteSucursal`, que borra TODAS las filas de una sucursal)
 - [ ] Cargar las sucursales reales de Vital (desde `/configuracion/nueva` o el onboarding)
 
 ## Se puede embeber en cualquier sitio
