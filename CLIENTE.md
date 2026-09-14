@@ -85,12 +85,17 @@ la unidad compartida, ya hereda el acceso. `/api/health` respondió `sdk.ok` a l
       está activo—, el CSP sale con `frame-ancestors *` y **sin** `X-Frame-Options`.
       Las variables quedaron marcadas *Sensitive*: `vercel env pull` devuelve `[SENSITIVE]`,
       así que si se pierde una la única salida es sobrescribirla
-- [ ] **`git push -u origin main`** — el repo `recylink/rcvital-next` ya está como `origin`,
-      pero el push lo corre Domingo: el clasificador de auto mode lo bloquea.
+- [x] **`git push -u origin main`** (2026-09-14): los 2 commits propios están en
+      `recylink/rcvital-next`. Lo corrió Domingo — el clasificador de auto mode bloquea el
+      push.
       `vercel link` abre un menú interactivo y se cancela cuando hay dos remotos, así que se
       linkeó con `origin` quitado un momento y después se volvió a poner
-- [ ] **Git conectado.** En Ando y Obra Limpia `vercel git connect` falló por permisos de la
-      app de Vercel en GitHub. Hasta que se conecte, desplegar es `vercel --prod` a mano
+- [ ] **Git conectado.** `vercel git connect` falló otra vez con "Make sure there aren't any
+      typos" (2026-09-14): es un permiso, la app de Vercel en la org está instalada sobre
+      repos seleccionados y éste no está en la lista. Se agrega desde
+      github.com/organizations/recylink/settings/installations → Vercel → Configure, o desde
+      Settings → Git del proyecto en Vercel. Hasta entonces pushear `main` NO despliega:
+      hay que correr `vercel --prod`
 - [ ] **Escritura de punta a punta**: login en prod con la clave y un registro manual de
       prueba. Queda para el navegador y no se pudo automatizar: el login es un Server Action
       y sacar su `Next-Action` id del build no valía el rodeo, y además la fila de prueba se
