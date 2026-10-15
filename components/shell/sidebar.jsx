@@ -17,6 +17,8 @@ const ITEMS = [
   { href: "/impacto", label: "Impacto", icon: "eco", match: (p) => p.startsWith("/impacto") },
   { href: "/registrar", label: "Registrar", icon: "edit", match: (p) => p.startsWith("/registrar") },
   { href: "/medidores", label: "Medidores", icon: "speed", match: (p) => p.startsWith("/medidores") },
+  // Propia de Vital (CLIENTE.md).
+  { href: "/dotacion", label: "Dotación", icon: "checklist", match: (p) => p.startsWith("/dotacion") },
   { href: "/configuracion", label: "Configuración", icon: "settings", match: (p) => p.startsWith("/configuracion") },
 ];
 

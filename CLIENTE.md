@@ -29,8 +29,37 @@ encabezados. Sin sucursales, sin registros: el cliente las carga desde la app.
 
 ## Lo único que cambia respecto de la instancia de referencia
 
-`EMPRESA` en `lib/instance.js`. Todo lo demás son variables de entorno. Si aparece un
-segundo cambio de código propio de Vital, anotarlo acá.
+`EMPRESA` en `lib/instance.js`, y el módulo **Dotación** (abajo). Todo lo demás son
+variables de entorno.
+
+### Módulo Dotación (código propio de Vital, 2026-10-15)
+
+Registro mensual de personas por sucursal y género, para el DAE. Definición en
+`CONTEXT.md`. No existe en la referencia ni en los otros espejos: **llevarlo a otra
+instancia es rehacer esto**:
+
+| Qué | Dónde |
+|---|---|
+| Hoja `Dotación` (`ID, Sucursal, Mes, Género, Cantidad`) | `SHEETS.DOTACION` en `lib/instance.js`, `ENCABEZADOS_DOTACION` en `lib/google/headers.js`. No la crea `init`/`setup`: la crea `upsertDotacion` al primer guardado, como Emisiones |
+| Actions SDK `getDotacion` (crudo) y `upsertDotacion` | `lib/google/actions.js`. `upsertPorClave` ganó un parámetro `normalizar` para que un mes que Sheets haya vuelto fecha siga calzando con la clave |
+| Dominio (géneros, patch, suma anual) | `lib/domain/dotacion.js` |
+| Lectura / escritura | `lib/sheets/dotacion.js`, `loadDotacion` en `lib/data.js`, tag `rc:dotacion` |
+| Server Action | `app/actions/dotacion.js` |
+| Pantalla y menú | `app/dotacion/page.jsx`, `components/views/dotacion.jsx`, ítem en `components/shell/sidebar.jsx` |
+| Diagnóstico | `Dotación` en `ESPERADOS` de `app/api/diagnostico/hojas/route.js` |
+| Pruebas | `test/dotacion.test.mjs`; `test/invariantes.test.mjs` suma `getDotacion` y `upsertDotacion` |
+
+La columna Sucursal guarda el **id** de la sucursal, no el nombre, igual que las
+Recargas: renombrar una sucursal no parte su historia.
+
+**Para que funcione hay que agregar `getDotacion,upsertDotacion` a `RC_SDK_ACTIONS`**,
+en `.env.local` y en las variables de Production de Vercel (y redeployar). Sin eso la
+pantalla carga vacía con aviso y guardar falla con un mensaje que nombra la variable.
+
+Al traer cambios de la referencia (`git merge upstream/main`), los archivos compartidos
+que tocó este módulo pueden chocar: `lib/google/actions.js`, `lib/google/headers.js`,
+`lib/instance.js`, `lib/apps-script.js`, `lib/data.js`, la sidebar, el diagnóstico de
+hojas y `test/invariantes.test.mjs`.
 
 No hizo falta cherry-pickear nada: los commits de iframe, `vercel.json` y la tarjeta de
 login ya estaban en la instancia de referencia al clonar.

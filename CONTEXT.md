@@ -59,3 +59,7 @@ _Avoid_: scope
 **Recarga**:
 Kilogramos de refrigerante repuestos a equipos de una Sucursal en un mes, declarados por el cliente. No es un consumo: no tiene boleta ni proveedor, y emite directamente por GWP × kg (alcance 1).
 _Avoid_: consumo de refrigerante, cuarto tipo de consumo
+
+**Dotación** _(solo Vital)_:
+Cantidad de personas que trabajaron en una Sucursal en un mes, por género (Hombre, Mujer, Trans masculino, Trans femenino, Sin informar). Cuenta a todas las personas, sin importar el tipo de contrato (propios y contratistas juntos), como pide el DAE. Un solo valor por Sucursal × mes × género: corregir sobrescribe, sin historial. La Sucursal equivale al "establecimiento" del DAE. La vista anual es la **suma** de los meses y se expresa en **personas-mes**, no en personas (50 personas todo el año = 600): no se copia al DAE como dotación. No es un consumo y no emite.
+_Avoid_: trabajadores, headcount, plantilla

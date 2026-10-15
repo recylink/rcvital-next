@@ -75,6 +75,7 @@ test("ninguna action de escritura de la app reescribe una hoja completa", async 
     upsertLecturasMedidor: { rows: [], remove: [] },
     upsertPreciosMedidor: { rows: [], remove: [] },
     upsertEmisiones: { rows: [], remove: [], grupos: [] },
+    upsertDotacion: { rows: [], remove: [] },
     upsertSucursal: { id: "suc_1", rows: [] },
     deleteSucursal: { id: "suc_1" },
     init: {},
@@ -96,13 +97,14 @@ test("ninguna action de escritura de la app reescribe una hoja completa", async 
   }
 });
 
-test("las lecturas siguen siendo las ocho conocidas", () => {
+test("las lecturas siguen siendo las conocidas", () => {
   // Si aparece una lectura nueva, tiene que decidirse explícitamente su modo (crudo o
   // display): es lo único que no se puede deducir después, y elegir mal cambia en
   // silencio lo que leen los parsers.
   assert.deepEqual(Object.keys(SDK_GET).sort(), [
     "getConfig",
     "getConfigSucursales",
+    "getDotacion", // propia de Vital; crudo
     "getEmissions",
     "getFotos",
     "getLecturasMedidor",
